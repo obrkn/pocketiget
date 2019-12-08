@@ -47,8 +47,11 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+
 production:
-  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
   database: pocketiget_production
   username: pocketiget
   password: <%= ENV['POCKETIGET_DATABASE_PASSWORD'] %>
