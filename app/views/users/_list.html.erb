@@ -1,0 +1,21 @@
+<br>
+
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item"><a href= <%= users_path %> class="nav-link <%= 'active' if current_page?(users_path) %> " >一覧</a></li>
+  <li class="nav-item"><a href= <%= user_path(current_user) %> class="nav-link <%= 'active' if current_page?(user_path(current_user)) %> " >マイページ</a></li>
+  <li class="nav-item"><a href= <%= likes_user_path(current_user) %> class="nav-link <%= 'active' if current_page?(likes_user_path(current_user)) %> " >お気に入り</a></li>
+</ul>
+
+<ul class="list-unstyled">
+  <div class="row">
+    <div class="col-sm-1">id</div>
+    <div class="col-sm-3">配布場所</div>
+    <div class="col-sm-2">投稿ユーザー</div>
+    <div class="col-sm-3">更新日時</div>
+    <div class="col-sm-3">作成日時</div>
+  </div>
+</ul>
+
+<%= render 'microposts/microposts', microposts: @microposts %>
+
+<%= paginate @microposts %>

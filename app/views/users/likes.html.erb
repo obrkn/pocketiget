@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-end">
-<%= form_tag user_path(current_user),:method => 'get' do %>
+<%= form_tag likes_user_path,:method => 'get' do %>
   <%= text_field_tag :search, '',:placeholder => "場所を入力して下さい"  %>
   <%= submit_tag '検索', class: 'btn btn-secondary' %>
 <% end %>

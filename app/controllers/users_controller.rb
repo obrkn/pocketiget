@@ -1,9 +1,13 @@
 class UsersController < ApplicationController
+  before_action :require_user_logged_in, only: [:index, :show]
+  
   def index
-    @users = User.order(id: :desc).page(params[:page]).per(25)
+    
+    @microposts = Micropost.search(params[:search]).order(id: :desc).page(params[:page])
   end
 
   def show
+    @microposts = current_user.microposts.search(params[:search]).order(id: :desc).page(params[:page])
   end
 
   def new
@@ -20,6 +24,10 @@ class UsersController < ApplicationController
       flash.now[:danger] = 'ユーザの登録に失敗しました。'
       render :new
     end
+  end
+  
+  def likes
+    @microposts = current_user.favorite_microposts.search(params[:search]).page(params[:page])
   end
   
    private

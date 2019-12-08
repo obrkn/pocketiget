@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   def new
   end
 
-  def crate
+  def create
     name = params[:session][:name]
     password = params[:session][:password]
     if login(name, password)

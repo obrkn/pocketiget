@@ -1,0 +1,21 @@
+<ul class="list-unstyled">
+  <% microposts.each do |micropost| %>
+    <div class="row">
+      <div class="col-sm-1">
+        <%= link_to micropost.id, micropost_path(micropost) %>
+      </div>
+      <div class="col-sm-3">
+        <p><%= micropost.spot %></p>
+      </div>
+      <div class="col-sm-2">
+        <p><%= micropost.user.name %></p>
+      </div>
+      <div class="col-sm-3">
+        <%= micropost.updated_at %>
+      </div>
+      <div class="col-sm-3">
+        <%= micropost.created_at %>
+      </div>
+    </div>
+  <% end %>
+</ul>
