@@ -1,6 +1,7 @@
 class MicropostsController < ApplicationController
   before_action :require_user_logged_in, only: [:show, :new, :create, :edit, :update, :destroy ]
   before_action :set_microposts, only: [:show, :edit, :update, :destroy ]
+  before_action :correct_user, only: [:edit, :update, :destroy ]
   
   def show
   end
@@ -43,10 +44,17 @@ class MicropostsController < ApplicationController
   private
   
   def set_microposts
-    @micropost = current_user.microposts.find(params[:id])
+    @micropost = Micropost.find(params[:id])
   end
 
   def micropost_params
     params.require(:micropost).permit(:spot, :comment)
+  end
+  
+  def correct_user
+    @micropost = current_user.microposts.find_by(id: params[:id])
+    unless @micropost
+      redirect_to root_url
+    end
   end
 end
