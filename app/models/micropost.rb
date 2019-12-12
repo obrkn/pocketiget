@@ -4,7 +4,7 @@ class Micropost < ApplicationRecord
   validates :comment, presence: true, length: { maximum: 255 }
   validates :spot, presence: true, length: { maximum: 30 }
   
-  has_many :favorites
+  has_many :favorites, dependent: :destroy
   has_many :favorite_user, through: :favorites, source: :user
   
   def self.search(search) #self.でクラスメソッドとしている
