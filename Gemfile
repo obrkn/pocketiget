@@ -61,3 +61,7 @@ gem 'pry-byebug', group: :development
 group :production do
   gem 'pg', '>= 0.18', '< 2.0'
 end
+
+# google map導入
+gem "geocoder" #検索文字から緯度経度を取得、また逆も可能
+gem "gmaps4rails" #googlemapにマーカーや情報を追加
