@@ -65,3 +65,6 @@ end
 # google map導入
 gem "geocoder" #検索文字から緯度経度を取得、また逆も可能
 gem "gmaps4rails" #googlemapにマーカーや情報を追加
+
+#環境変数を使う
+gem 'dotenv-rails'

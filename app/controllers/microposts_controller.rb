@@ -48,7 +48,7 @@ class MicropostsController < ApplicationController
   end
 
   def micropost_params
-    params.require(:micropost).permit(:spot, :comment)
+    params.require(:micropost).permit(:spot, :comment, :latitude, :longitude)
   end
   
   def correct_user

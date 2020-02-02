@@ -7,6 +7,15 @@
   </div>
   
   <br>
+  
+  <div class="form-group row">
+    <div class="col-sm-2"><%= f.label :latitude, '緯度' %></div>
+    <div class="col-sm-4"><%= f.text_field :latitude, class: 'form-control' %></div>
+    <div class="col-sm-2"><%= f.label :longitude, '経度' %></div>
+    <div class="col-sm-4"><%= f.text_field :longitude, class: 'form-control' %></div>
+  </div>
+  
+  <br>
 
   <div class="form-group row">
     <div class="col-sm-2"><%= f.label :comment, 'コメント' %></div>
@@ -20,13 +29,129 @@
   </div>
 <% end %>
 
-
-<div>
-  <input type="text" id="num1">
-  <input type="text" id="num2">
+<!--現在地取得ボタン-->
+<div class="row mb-1">
+  <div class="col-sm-3"><button id="spot-now" class="btn btn-dark btn-block">現在地を取得</button></div>
 </div>
-<button type="button" id="button-add">+</button>
-<button type="button" id="button-sub">-</button>
-<button type="button" id="button-mul">*</button>
-<button type="button" id="button-div">/</button>
-<div id="box"></div>
+
+<!--googlemap　入力フィールド-->
+<div id="map" style="height: 500px;"></div>
+
+<!--googlemap 地図の描画-->
+<script>
+
+// マップを作成
+function initMap() {
+  // とりあえず東京駅
+  var pos = {lat: 35.681236, lng: 139.767125};
+  // マップの中心を指定
+  var map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 15, center: pos});
+  // マーカーの位置を指定
+  var marker = new google.maps.Marker({position: pos, map: map});
+
+};
+
+// ボタンがクリックされると現在地を取得
+
+$('#spot-now').on('click', (e) => {
+  e.preventDefault();
+  
+  // 対応している場合
+  if( navigator.geolocation )
+  {
+  	// 現在地を取得
+  	navigator.geolocation.getCurrentPosition(
+  
+  		// [第1引数] 取得に成功した場合の関数
+  		function( position )
+  		{
+  			// 取得したデータの整理
+  			var data = position.coords ;
+  			
+  			// データの整理
+  			var lat = data.latitude ;
+  			var lng = data.longitude ;
+  			
+  			// アラート表示
+  			alert( "あなたの現在位置は、\n[" + lat + "," + lng + "]\nです。" ) ;
+  			
+  			// 元のデータ削除
+  			$('#map').children().remove();
+  
+  			// マップを作成
+        // function initMap() {
+          // 位置を緯度経度で指定
+          var pos = {lat: lat, lng: lng};
+          // マップの中心を指定
+          var map = new google.maps.Map(
+              document.getElementById('map'), {zoom: 15, center: pos});
+          // マーカーの位置を指定
+          var marker = new google.maps.Marker({position: pos, map: map, draggable: true});
+
+          $("#micropost_latitude").val(lat);
+          $("#micropost_longitude").val(lng);
+        // }
+  		} ,
+        
+  		// [第2引数] 取得に失敗した場合の関数
+  		function( error )
+  		{
+  			// エラーコード(error.code)の番号
+  			// 0:UNKNOWN_ERROR				原因不明のエラー
+  			// 1:PERMISSION_DENIED			利用者が位置情報の取得を許可しなかった
+  			// 2:POSITION_UNAVAILABLE		電波状況などで位置情報が取得できなかった
+  			// 3:TIMEOUT					位置情報の取得に時間がかかり過ぎた…
+  
+  			// エラー番号に対応したメッセージ
+  			var errorInfo = [
+  				"原因不明のエラーが発生しました…。" ,
+  				"位置情報の取得が許可されませんでした…。" ,
+  				"電波状況などで位置情報が取得できませんでした…。" ,
+  				"位置情報の取得に時間がかかり過ぎてタイムアウトしました…。"
+  			] ;
+  
+  			// エラー番号
+  			var errorNo = error.code ;
+  
+  			// エラーメッセージ
+  			var errorMessage = "[エラー番号: " + errorNo + "]\n" + errorInfo[ errorNo ] ;
+  
+  			// アラート表示
+  			alert( errorMessage ) ;
+  
+  		} ,
+  
+  		// [第3引数] オプション
+  		{
+  			"enableHighAccuracy": false,
+  			"timeout": 8000,
+  			"maximumAge": 2000,
+  		}
+  
+  	) ;
+  }
+  
+  // 対応していない場合
+  else
+  {
+  	// エラーメッセージ
+  	var errorMessage = "お使いの端末は、GeoLacation APIに対応していません。" ;
+  
+  	// アラート表示
+  	alert( errorMessage ) ;
+
+  }
+});
+
+$("#spot-marker").on('click', (e) => {
+  e.preventDefault();
+  var map = new google.maps.Map(document.getElementById("map"), opts);
+
+  var latlng = map.getCenter();
+  var lat = latlng.lat();
+  var lng = latlng.lng();
+  alert("緯度："+lat+"、経度："+lng);
+});
+
+</script>

@@ -31,26 +31,6 @@
   <div class="col-sm-10"><%= render 'favorites/favorite_button', micropost: @micropost %></div>
 </div>
 
-<!--フロントエンドコース　グーグルマップ追加-->
-<div id='map'></div>
-
-<style>
-#map{
-  height: 400px;
-}
-</style>
-
-<script>
-function initMap(){
-  let map = new google.maps.Map(document.getElementById('map'), {
-  center: {lat: -34.397, lng: 150.644},
-  zoom: 8
-  });
-}
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCchOZAsMpGk-pzqKTlT2nnpiWDapGYslY&callback=initMap" async defer></script>
-<!--グーグルマップ追加　おわり-->
-
 <% if current_user == @micropost.user %>
   <div class="form-group row">
     <div class="col-sm-2"></div>
@@ -58,3 +38,24 @@ function initMap(){
     <div class="col-sm-5"><%= link_to '削除', @micropost, method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-secondary btn-block' %></div>
   </div>
 <% end %>
+
+<!--グーグルマップ追加-->
+<div id="map" style="height: 500px;"></div>
+
+<script>
+  //代入
+  var lat = <%= @micropost.latitude %>;
+  var lng = <%= @micropost.longitude %>;
+  
+  // マップを作成
+  function initMap() {
+    // 位置を緯度経度で指定
+    var pos = {lat: lat, lng: lng};
+    // マップの中心を指定
+    var map = new google.maps.Map(
+        document.getElementById('map'), {zoom: 15, center: pos});
+    // マーカーの位置を指定
+    var marker = new google.maps.Marker({position: pos, map: map, draggable: true});
+  }
+</script>
+<!--グーグルマップ追加　おわり-->
