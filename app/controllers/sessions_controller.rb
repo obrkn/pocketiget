@@ -13,6 +13,18 @@ class SessionsController < ApplicationController
       render :new
     end
   end
+  
+  def create_guest
+    name = "guest"
+    password = "j8AZJqQj"
+    if login(name, password)
+      flash[:success] = 'ゲストとしてログインしました。'
+      redirect_to root_url
+    else
+      flash.now[:danger] = 'ログインに失敗しました。'
+      render :new
+    end
+  end
 
   def destroy
     session[:user_id] = nil
